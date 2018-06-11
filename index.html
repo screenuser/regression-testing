@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en-US" prefix="og: http://ogp.me/ns#" class="no-js">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="profile" href="http://gmpg.org/xfn/11">
+		<link rel="pingback" href="/xmlrpc.php">
+		<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700,400italic' rel='stylesheet' type='text/css'>
+	<script>(function(html){html.className = html.className.replace(/\bno-js\b/,'js')})(document.documentElement);</script>
+<title>Regression testing best practices and techniques</title>
+
+ 
+
+<link rel="amphtml" href="amp/index.html" /><link rel='dns-prefetch' href='https://js.hs-scripts.com/' />
+<link rel='dns-prefetch' href='https://s.w.org/' />
+<link rel="alternate" type="application/rss+xml" title="Screenster &raquo; Feed" href="./feed/index.html" />
+<link rel="alternate" type="application/rss+xml" title="Screenster &raquo; Comments Feed" href="./comments/feed/index.html" />
+<link rel="alternate" type="application/rss+xml" title="Screenster &raquo; What is Regression Testing? Techniques and best practices Comments Feed" href="feed/index.html" />
+		 
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel='stylesheet' id='contact-form-7-css'  href='./wp-content/plugins/contact-form-7/includes/css/styles.css%3Fver=5.0.2.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ez-icomoon-css'  href='./wp-content/plugins/easy-table-of-contents/vendor/icomoon/style.min.css%3Fver=1.7.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ez-toc-css'  href='./wp-content/plugins/easy-table-of-contents/assets/css/screen.min.css%3Fver=1.7.css' type='text/css' media='all' />
+<style id='ez-toc-inline-css' type='text/css'>
+div#ez-toc-container p.ez-toc-title {font-size: 120%;}div#ez-toc-container p.ez-toc-title {font-weight: 500;}div#ez-toc-container ul li {font-size: 95%;}
+</style>
+<link rel='stylesheet' id='genericons-css'  href='./wp-content/themes/twentysixteen/genericons/genericons.css%3Fver=3.4.1.css' type='text/css' media='all' />
+<link rel='stylesheet' id='twentysixteen-style-css'  href='./wp-content/themes/twentysixteen/style.css%3Fver=5.1.7.css' type='text/css' media='all' />
+<link rel='stylesheet' id='wpgform-css-css'  href='./wp-content/plugins/wpgform/css/wpgform.css%3Fver=4.9.6.css' type='text/css' media='all' />
+<link rel='stylesheet' id='addtoany-css'  href='./wp-content/plugins/add-to-any/addtoany.min.css%3Fver=1.14.css' type='text/css' media='all' />
+<style id='addtoany-inline-css' type='text/css'>
+div.addtoany_share_save_container {
+opacity: 0.8;
+}
+</style>
+<script type='text/javascript' src='./wp-includes/js/jquery/jquery.js%3Fver=1.12.4'></script>
+<script type='text/javascript' src='./wp-includes/js/jquery/jquery-migrate.min.js%3Fver=1.4.1'></script>
+<script type='text/javascript' src='./wp-content/plugins/add-to-any/addtoany.min.js%3Fver=1.0'></script>
+<script type='text/javascript' src='./wp-content/plugins/wonderplugin-lightbox/engine/wonderpluginlightbox.js%3Fver=4.0'></script>
+<!--[if lt IE 9]>
+<script type='text/javascript' src='/wp-content/themes/twentysixteen/js/html5.js?ver=3.7.3'></script>
+<![endif]-->
+<link rel='https://api.w.org/' href='./wp-json/index.html' />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="./xmlrpc.php%3Frsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="./wp-includes/wlwmanifest.xml" /> 
+<meta name="generator" content="WordPress 4.9.6" />
+<link rel="alternate" type="application/json+oembed" href="./wp-json/oembed/1.0/embed%3Furl=https:%252F%252Fscreenster.io%252Fregression-testing%252F" />
+<link rel="alternate" type="text/xml+oembed" href="./wp-json/oembed/1.0/embed%3Furl=https:%252F%252Fscreenster.io%252Fregression-testing%252F&amp;format=xml" />
+
+<script data-cfasync="false">
+window.a2a_config=window.a2a_config||{};a2a_config.callbacks=[];a2a_config.overlays=[];a2a_config.templates={};
+(function(d,s,a,b){a=d.createElement(s);b=d.getElementsByTagName(s)[0];a.async=1;a.src="https://static.addtoany.com/menu/page.js";b.parentNode.insertBefore(a,b);})(document,"script");
+</script>
+<link rel="icon" href="./wp-content/uploads/2016/03/cropped-favicon-32x32.png" sizes="32x32" />
+<link rel="icon" href="./wp-content/uploads/2016/03/cropped-favicon-192x192.png" sizes="192x192" />
+<link rel="apple-touch-icon-precomposed" href="./wp-content/uploads/2016/03/cropped-favicon-180x180.png" />
+<meta name="msapplication-TileImage" content="/wp-content/uploads/2016/03/cropped-favicon-270x270.png" />
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MN2F9R8');</script>
+<!-- End Google Tag Manager -->
+</head>
+
+<body class="post-template-default single single-post postid-1017 single-format-standard group-blog">
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MN2F9R8"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<div id="wrapper">
+	<header id="header">
+		<div class="container clearfix">
+		<a class="logo" href="./index.html">screenster</a>		
+			<div class="nav-container">
+				<span class="mobile-opener"><i></i></span>
+				<ul id="nav" class="menu"><li id="menu-item-12" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-12"><a href="./index.html">Home</a></li>
+<li id="menu-item-313" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-313"><a href="./documentation/demo-automation-of-gmail-with-screenster/index.html">Documentation</a></li>
+<li id="menu-item-45" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-45"><a href="./pricing/index.html">Pricing</a></li>
+<li id="menu-item-44" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-44"><a href="./support/index.html">Support</a></li>
+<li id="menu-item-43" class="menu-item menu-item-type-post_type menu-item-object-page current_page_parent menu-item-43"><a href="./blog/index.html">Blog</a></li>
+<li id="menu-item-1812" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1812"><a href="https://tests.screenster.io/authenticate/signin?remember=true">Login</a></li>
+<li id="menu-item-13" class="sign-link menu-item menu-item-type-custom menu-item-object-custom menu-item-13"><a href="https://tests.screenster.io/authenticate/signup">Sign up</a></li>
+</ul>			</div>
+		</div>
+
+	</header>
+
+<div id="main">	<div class="container">		<div class="blog-wrap">			
+
+
+	<aside id="secondary" class="sidebar" role="complementary">
+		<section id="enhancedtextwidget-2" class="widget widget_text enhanced-text-widget"><div class="textwidget widget-text"><section id="recent-posts-2" class="widget widget_recent_entries">
+    <h2>Related Posts</h2>
+    <ul>
+        <li>
+            <a href="./image-comparison-tool/index.html">Image and screenshot comparison tools for UI testing</a>
+            <span class="post-date">June 20, 2017</span>
+        </li>
+        <li>
+            <a href="./selenium-alternatives-for-testing-automation/index.html">Selenium alternatives for testing automation</a>
+            <span class="post-date">March 13, 2016</span>
+        </li>
+        <li>
+            <a href="./selenium-ide-chrome/index.html">How to run tests from Selenium IDE in Chrome</a>
+            <span class="post-date">March 2, 2017</span>
+        </li>
+<li>
+            <a href="./selenium-ide-alternatives-for-ui-regression-testing/index.html">Selenium IDE alternatives for UI regression testing</a>
+            <span class="post-date">February 3, 2017</span>
+        </li>
+<li>
+            <a href="index.html">What is Regression Testing? Techniques and best practices
+</a>
+            <span class="post-date">May 3, 2017</span>
+        </li>
+    </ul>
+</section></div></section><div class="sticky-sidebar" style="text-align: center;"></br><span class="sidebar-cta">Want to try Screenster on the cloud?</span><a id="btn-try-online-sidebar" class="btn" href="https://tests.screenster.io/authenticate/signup?tryNow=true" target="_blank">Try Online</a></br></br></br></div>
+	</aside><!-- .sidebar .widget-area -->
+	<!--Sidebar sticky functionality-->
+	<script>
+jQuery( document ).ready(function() {
+  
+
+  var $sticky = jQuery('.sticky-sidebar');
+  var $stickyrStopper = jQuery('.sticky-stopper');
+  if (!!$sticky.offset()) { // make sure ".sticky" element exists
+
+    var generalSidebarHeight = $sticky.innerHeight();
+    var stickyTop = $sticky.offset().top;
+    var stickOffset = 100;
+    
+    
+    jQuery(window).scroll(function(){ // scroll event
+      var windowTop = jQuery(window).scrollTop(); // returns number
+var stickyStopperPosition = $stickyrStopper.offset().top;
+var stopPoint = stickyStopperPosition - generalSidebarHeight - stickOffset-78;
+var diff = stopPoint + stickOffset;
+      if (stopPoint < windowTop) {
+          $sticky.css({ position: 'absolute', top: diff });
+      } else if (stickyTop < windowTop+stickOffset) {
+          $sticky.css({ position: 'fixed', top: stickOffset });
+      } else {
+          $sticky.css({position: 'absolute', top: 'initial'});
+      }
+    });
+
+  }
+});
+</script>
+
+
+
+
+			<div class="blog-content">		
+<article id="post-1017" class="post-1017 post type-post status-publish format-standard has-post-thumbnail hentry category-ui-testing-automation">
+	<h1>What is Regression Testing? Techniques and best practices</h1>	<span class="post-date">May 3, 2017</span>
+
+    
+	
+	<div class="post-thumbnail">
+		<img width="1200" height="800" src="./wp-content/uploads/2017/01/regression-testing-101-1200x800.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="Regression testing of a WordPress theme" srcset="/wp-content/uploads/2017/01/regression-testing-101.jpg 1200w, /wp-content/uploads/2017/01/regression-testing-101-300x200.jpg 300w, /wp-content/uploads/2017/01/regression-testing-101-768x512.jpg 768w, /wp-content/uploads/2017/01/regression-testing-101-1024x683.jpg 1024w" sizes="(max-width: 709px) 85vw, (max-width: 909px) 67vw, (max-width: 984px) 60vw, (max-width: 1362px) 62vw, 840px" />	</div><!-- .post-thumbnail -->
+
+	
+	<div class="content">
+		<span class="entry-content"><p>If you’ve been following this blog, you know that we are pretty serious about regression testing best practices. Visual regressions were the arch-enemies of our product <a href="./visual-css-regression-testing/index.html" target="_blank">AjaxSwing</a>. To overcome them, we’ve even created our own <a href="./index.html" target="_blank" rel="nofollow">automated regression testing tool</a>.</p>
+<p><span id="more-1017"></span></p>
+<p>Today, we’d like to talk about this type of testing. We&#8217;ll cover its key concepts and challenges. Besides, we&#8217;ll explore regression testing best practices, techniques and tools. Let’s start with addressing some of the basics.</p>
+<h2>What is regression testing?</h2>
+<p><img src="./wp-content/uploads/2017/05/Importance-of-Regression-Testing-in-Software-Development-1-300x260.png" alt="software testing regression testing"></p>
+<p><em>Image credit: 360logica</em></p>
+<p>Basically, we&#8217;re talking about a testing methodology/process that tells you if a previously written and tested code broke after you’ve added an update or a fix.</p>
+<p>In other words, it helps you notice if you’ve unknowingly introduced bugs to your software while adding new code. New bugs of this kind are called regressions.</p>
+<h2>How to do regression testing?</h2>
+<p><img src="./wp-content/uploads/2017/05/HaTRpy2-300x180.png" alt="regression testing definition of a process"></p>
+<p><em>Image credit: DZone</em></p>
+<p>Okay, so how exactly do you test for regressions? In a nutshell, you perform regression testing by re-executing the same tests after each update. Passing tests ensure that your code continues to function as expected. Once a test that passed during previous runs fires a failure, you know that you’re dealing with a regression.</p>
+<p>As a rule, it’s a good practice to run tests before the release of every new version of your product. A typical routine incorporates the following stages:</p>
+<ul>
+<li>selecting which portions of the system to retest</li>
+<li>execution of test cases (manually or automated).</li>
+</ul>
+<p>Here’s another essential thing to note. In theory, regression testing applies to any testing level, including unit, API/integration, system and acceptance testing. There is a widespread convention, though, that regression testing is mostly a part of system testing.</p>
+<h2>Extent of your tests</h2>
+<p>The extent of a regression test can cover the complete functionality of your software or focus on separate aspects.</p>
+<p>Aside from functionality, tests of this type can deal with non-functional aspects of your project. Specifically, visual regression testing of a user interface often tackles presentation issues. Most people would characterize the latter as aesthetic.</p>
+<h2>Regression testing techniques</h2>
+<p>It’s often impractical to cover every aspect of your application with regression tests. Due to this fact, several <a href="https://en.wikipedia.org/wiki/Regression_testing#Techniques" target="_blank" rel="nofollow">regression testing techniques</a> exist.</p>
+<h3>Full Testing (Retest All)</h3>
+<p>This regression testing technique strives to achieve a complete coverage of all possible issues during every test run. This approach boils down to running all tests after every modification introduced to the project.</p>
+<p>While it takes more time and effort, the retest-all technique is optimal when regressions are hard to predict and localize. Need an example? How about CSS regressions where one visual bug affects multiple pages and UI states.</p>
+<p>In some instances, there is no way to predict which parts of the system a change will affect. In such cases, only full regression testing can guarantee that the system will perform well.</p>
+<h3>Regression Test Selection</h3>
+<p>The Retest All regression testing technique is reliable, yet time-consuming and costly. That’s why it’s often wiser to organize your tests into suites that correspond to modules of your program. During each testing session, your QAs will retest only the modules that are likely to be affected by the change.</p>
+<p>In the case of regression test selection, each run focuses on the functionality that’s relevant for a particular release. When following this approach, it’s vital to make sure that it gives you higher ROI than the Retest All technique.</p>
+<h3>Test Case Prioritization</h3>
+<p>Prioritizing tests is another way to optimize the testing process. With Test Case Prioritization, your QA team still runs all tests, but it decides on which ones to run first.</p>
+<p>There are two widely accepted approaches to Test Case Prioritization:</p>
+<ul>
+<li>General prioritization. Testers select cases based on their relevance to all subsequent versions.</li>
+<li>Version-specific prioritization. In the case of this technique, testers choose cases based on their importance for a specific version or update.</li>
+</ul>
+<p>Retest All and Test Case Prioritization involve roughly the same amount of resources. Still, the latter enables you to ship important updates and fixes faster.</p>
+<h3>Hybrid</h3>
+<p>This term covers tactics that border on Retest All, Regression Test Selection and Test Case Prioritization. For instance, teams may opt for Regression Test Selection in the case with minor releases yet choose Test Case Prioritization or Retest All for the major ones.</p>
+<h2>Regression testing best practices</h2>
+<p>Alright, we’ve found out what regression testing is and how it’s carried out. Let’s proceed to some of the regression testing best practices. Let’s look at a couple of recommendations that can make the life of a QA engineer simpler.</p>
+<h3>Regression testing best practice #1. Automate</h3>
+<p>Or, to be more precise, automate everything you can. It’s next to impossible to eliminate the need for manual testing altogether. Nevertheless, you can keep the number of manual tests to a reasonable minimum. In this context, it’s paramount that you develop a strategy for determining which tests to automate and which tests to execute manually.</p>
+<p>The most common areas that require automation in 99.99% of cases include:</p>
+<ul>
+<li>Running the same regression tests on different platforms. This includes different operating systems, browsers, and devices.</li>
+<li>Running tests after a bug fix or a minor update.</li>
+<li>Data-driven testing. For instance, testing how your application handles different input data.</li>
+</ul>
+<h3>Best practice #2. Build customer personas and define your happy paths</h3>
+<p>Happy paths are clearly defined test cases associated with widespread UX scenarios. The typical examples of these scenarios include signing in or adding items to a shopping card.</p>
+<p>In real-life projects, automated tests often revolve around happy paths. Edge cases, in the meantime, become tasks for manual testers. A clear understanding of happy paths stems from the understanding of who your users are. This, in turn, involves <a href="https://blog.hubspot.com/blog/tabid/6307/bid/33491/everything-marketers-need-to-research-create-detailed-buyer-personas-template.aspx" target="_blank" rel="nofollow">creating well-defined customer personas</a>.</p>
+<h3>Best practice #3. Keep your regression test suites up to date</h3>
+<p>It’s inevitable that at some point, you’ll need to revise your test suites. As your project grows, some of the added functionality will start lacking sufficient test coverage. Some of the tests may become obsolete or unnecessary. For these reasons, your QA team will need to occasionally revise your regression test suites.</p>
+<h3>Best practice #4. Remember about ROI</h3>
+<p>Return of investment determines every process in a real-life project. When it comes to testing, ROI is a metric that goes well beyond the choice between manual and automated QA.</p>
+<p>You need to know about all expenses associated with a particular automation tool. Also, how much time and how many specialists will you need to run testing suite? Asking yourself questions of this sort will help you build an efficient and cost-effective testing strategy.</p>
+<h3>Best practice #5. Use a diversified automation toolkit</h3>
+<p>There is no one-size-fits-all approach to automation that covers all levels of the pyramid. You can cover unit and API-level tests with Selenium-like frameworks, but you will need a different solution for functional and UI testing. Specifically, a record-playback platform will address the low maintainability of UI tests by allowing QAs to quickly edit test suites.</p>
+<h3>Best practice #6. Automate visual regression testing</h3>
+<p>Manual verification of the UI has its advantages, but at the end of the day, it’s too slow and ineffective. Besides, <a href="https://en.wikipedia.org/wiki/Change_blindness" target="_blank" rel="nofollow">humans are innately bad at spotting minor visual differences</a>. Knowing this, it makes more sense to automate visual regression testing with a screenshot comparison module or a dedicated tool. </p>
+<h2>Regression testing tools and software</h2>
+<p>We’ve covered several tools in our earlier posts on Selenium competitors and Selenium IDE alternatives. Still, it might prove handy to have a quick look at the most popular options:</p>
+<ul>
+<li>Code-based software testing frameworks. Selenium seems like the undisputable leader in this department. Still, there are other tools that outperform Selenium in the way of functionality, ROI, and other criteria.</li>
+<li>JavaScript-based scripting frameworks like Mocha or Karma. Like Selenium, these tools rely on the WebDriver API, and they enable testers to hand-code automated tests. Unlike Selenium, these tools provide a higher level of abstraction, which makes them easier (and more fun) to work with.</li>
+<li>BDD testing frameworks like Cucumber. Tools of this type use <a href="https://en.wikipedia.org/wiki/Plain_language" target="_blank" rel="nofollow">plain language parsers</a> that enable QA engineers to write tests in a language that feels almost like human English.</li>
+<li>Enterprise record-playback IDEs. This category includes UFT, Progress Test Studio (Telerik), and similar solutions. Instead of (or in addition to) relying on hand-coded tests, IDEs record sequences of interactions with the software that’s being tested. They rerun these recorded interactions and use image comparison to detect regressions.</li>
+<li>Codeless cloud-based platforms. Platforms like Screenster or Usetrace are lightweight and simple alternatives to enterprise IDEs. While using the same record-playback principle, cloud-based platforms offer advanced functionality. This functionality includes DOM comparison, automatic handling of timeouts and dynamic regions, collaboration functionality, etc.</li>
+</ul>
+<h2>Challenges of regression testing</h2>
+<p><img src="./wp-content/uploads/2017/05/regressiontestingchallenges-300x106.png" alt="Limited time is one of the key challenges of regression testing"></p>
+<p><em>Image credit: Guru99</em></p>
+<p>Every process or method has its pitfalls, and software testing is no exception. The advent of Agile has brought new challenges that testers have to overcome:</p>
+<ul>
+<li>Minimal documentation with changing project scope and frequent iterations. The pace at which Agile projects move leaves little time for both manual testing and hand-coded tests. As a consequence, it is becoming increasingly more challenging to ensure efficient test coverage of a project.</li>
+<li>Choice of a testing tool and methodology. Manual regression testing is faster to set up in the short term, yet massively inefficient in the long run. Hand-coded tests, on the other hand, take more time to develop and are harder to maintain. With the right IDE, test automation takes less time and effort, yet IDEs are hardly compatible with TDD and the test-first approach.</li>
+<li>UI testing. The increasing focus on the UI/UX aspect of a software product makes UI testing more important than ever. Sadly, traditional code-based tools fail to provide a comprehensive test coverage of a UI.</li>
+</ul>
+<h2>Bottom line: what the future holds for us</h2>
+<p><img src="./wp-content/uploads/2017/05/figroyal_bluemensffffff.jpg" alt="Keep calm and automate regression testing"></p>
+<p><em>Image credit: TestFort</em></p>
+<p>One of the key factors influencing regression testing is the ever-increasing speed of production in software development. In the brave new world of today, out-delivering your competition is the key challenge. You need to do more with less time. And you need to make the best use of your resources.</p>
+<p>So what does this mean for testers?</p>
+<p>First, it takes a smarter strategy to ensure that the code you’ve written and previously tested performs well after a new update. It takes adherence to follow best practices. Besides, this implies being on the constant lookout for new tools and solutions.</p>
+<p>As codeless IDEs and cloud-based platforms improve, their role in professional testing grows more prominent. When compared to code-based solutions, cloud-based IDEs offer significant advantages in terms of learning curve, test maintenance, collaboration functionality, and the ROI of regression testing.</p>
+<p>But does this mean that a codeless IDE is optimal for every project? More specifically, will they work for the project you’re working on? The only way to find out is to try it for yourself. Check out the free online demo of Screenster below and tell us what you think.<br />
+
+<div class="sticky-stopper"></div>
+<br />
+
+<div class="bottom-cta" style="text-align: center;">
+<h2>Want to try Screenster on the cloud?</h2>
+<a id="btn-try-online" class="btn" href="https://tests.screenster.io/authenticate/signup?tryNow=true" target="_blank">Try Online</a>
+
+</div>
+<br />
+&nbsp;</p>
+<p><!--/regression-testing-101-everything-you-need-to-know/ --></p>
+</span><div class="hatom-extra"><span class="entry-title">What is Regression Testing? Techniques and best practices</span> was last modified: <span class="updated"> May 21st, 2018</span> by <span class="author vcard"><span class="fn">Ilya Goncharov</span></span></div><div class="addtoany_share_save_container addtoany_content addtoany_content_bottom"><div class="a2a_kit a2a_kit_size_32 addtoany_list" data-a2a-url="/regression-testing/" data-a2a-title="What is Regression Testing? Techniques and best practices"><a class="a2a_button_facebook" href="https://www.addtoany.com/add_to/facebook?linkurl=https%3A%2F%2Fscreenster.io%2Fregression-testing%2F&amp;linkname=What%20is%20Regression%20Testing%3F%20Techniques%20and%20best%20practices" title="Facebook" rel="nofollow noopener" target="_blank"></a><a class="a2a_button_twitter" href="https://www.addtoany.com/add_to/twitter?linkurl=https%3A%2F%2Fscreenster.io%2Fregression-testing%2F&amp;linkname=What%20is%20Regression%20Testing%3F%20Techniques%20and%20best%20practices" title="Twitter" rel="nofollow noopener" target="_blank"></a><a class="a2a_button_linkedin" href="https://www.addtoany.com/add_to/linkedin?linkurl=https%3A%2F%2Fscreenster.io%2Fregression-testing%2F&amp;linkname=What%20is%20Regression%20Testing%3F%20Techniques%20and%20best%20practices" title="LinkedIn" rel="nofollow noopener" target="_blank"></a><a class="a2a_button_google_plus" href="https://www.addtoany.com/add_to/google_plus?linkurl=https%3A%2F%2Fscreenster.io%2Fregression-testing%2F&amp;linkname=What%20is%20Regression%20Testing%3F%20Techniques%20and%20best%20practices" title="Google+" rel="nofollow noopener" target="_blank"></a><a class="a2a_button_email" href="https://www.addtoany.com/add_to/email?linkurl=https%3A%2F%2Fscreenster.io%2Fregression-testing%2F&amp;linkname=What%20is%20Regression%20Testing%3F%20Techniques%20and%20best%20practices" title="Email" rel="nofollow noopener" target="_blank"></a></div></div>	</div><!-- .content -->
+	
+	<div id="single_post_pagination">
+		<a href="./regression-testing-tools-most-important-facts/index.html" rel="prev">&laquo; Most important facts about regression testing tools in 2017</a> <a href="./screenster-vs-sauce-labs/index.html" rel="next">Screenster vs Sauce Labs: cloud testing tools compared; &raquo</a>	</div>
+	
+	<footer class="footer">
+			</footer><!-- footer -->
+
+</article><!-- #post-## -->
+
+<div id="comments" class="comments-area">
+
+			<h2 class="comments-title">
+			33 thoughts on &ldquo;What is Regression Testing? Techniques and best practices&rdquo;		</h2>
+
+		
+		<ol class="comment-list">
+					<!--<li id="comment-40" class="pingback even thread-even depth-1">
+			<div class="comment-body">
+				Pingback: <a href='http://agileengine.com/regression-testing-tools-compared-screenster-vs-sauce-labs/' rel='external nofollow' class='url'>Regression testing tools compared: Screenster vs Sauce Labs</a> 			</div>-->
+</li><!-- #comment-## -->
+		<!--<li id="comment-69" class="pingback odd alt thread-odd thread-alt depth-1">
+			<div class="comment-body">
+				Pingback: <a href='/regression-testing-tools-compared-screenster-vs-sauce-labs/' rel='external nofollow' class='url'>Regression testing tools compared: Screenster vs Sauce Labs</a> 			</div>-->
+</li><!-- #comment-## -->
+		<!--<li id="comment-73" class="pingback even thread-even depth-1">
+			<div class="comment-body">
+				Pingback: <a href='/automated-regression-testing-in-agile-why-what-and-how/' rel='external nofollow' class='url'>Automated regression testing of the UI in Agile</a> 			</div>-->
+</li><!-- #comment-## -->
+		<!--<li id="comment-78" class="pingback odd alt thread-odd thread-alt depth-1">
+			<div class="comment-body">
+				Pingback: <a href='http://talentedtester.com/regression-testing-best-practices/' rel='external nofollow' class='url'>Regression Testing Best Practices | Talented Tester</a> 			</div>-->
+</li><!-- #comment-## -->
+		<!--<li id="comment-91" class="pingback even thread-even depth-1">
+			<div class="comment-body">
+				Pingback: <a href='/most-important-facts-about-regression-testing-tools-in-2017/' rel='external nofollow' class='url'>What you need to know about regression testing tools in 2017</a> 			</div>-->
+</li><!-- #comment-## -->
+		<!--<li id="comment-103" class="pingback odd alt thread-odd thread-alt depth-1">
+			<div class="comment-body">
+				Pingback: <a href='/lets-talk-about-selenium-competitors-for-ui-regression-testing/' rel='external nofollow' class='url'>Selenium competitors for UI regression testing</a> 			</div>-->
+</li><!-- #comment-## -->
+		<!--<li id="comment-104" class="pingback even thread-even depth-1">
+			<div class="comment-body">
+				Pingback: <a href='/a-better-way-to-do-visual-regression-testing/' rel='external nofollow' class='url'>A better way to do visual regression testing</a> 			</div>-->
+</li><!-- #comment-## -->
+		<!--<li id="comment-105" class="pingback odd alt thread-odd thread-alt depth-1">
+			<div class="comment-body">
+				Pingback: <a href='/image-and-screenshot-comparison-tools-for-ui-testing/' rel='external nofollow' class='url'>Screenshot comparison &amp; image comparison UI testing tools</a> 			</div>-->
+</li><!-- #comment-## -->
+		<!--<li id="comment-106" class="pingback even thread-even depth-1">
+			<div class="comment-body">
+				Pingback: <a href='/ui-regression-testing-challenges-and-how-screenster-handles-them/' rel='external nofollow' class='url'>What regression testing challenges exist in UI testing?</a> 			</div>-->
+</li><!-- #comment-## -->
+		<!--<li id="comment-107" class="pingback odd alt thread-odd thread-alt depth-1">
+			<div class="comment-body">
+				Pingback: <a href='/screenster-tests-got-faster-with-minimal-verification/' rel='external nofollow' class='url'>Minimal Verification for faster UI regression testing</a> 			</div>-->
+</li><!-- #comment-## -->
+		<!--<li id="comment-108" class="pingback even thread-even depth-1">
+			<div class="comment-body">
+				Pingback: <a href='/responsive-design-testing-tools-challenges-solutions/' rel='external nofollow' class='url'>Responsive design testing tools and tactics</a> 			</div>-->
+</li><!-- #comment-## -->
+		<!--<li id="comment-109" class="pingback odd alt thread-odd thread-alt depth-1">
+			<div class="comment-body">
+				Pingback: <a href='/regression-testing-on-the-cloud/' rel='external nofollow' class='url'>Regression testing on the cloud</a> 			</div>-->
+</li><!-- #comment-## -->
+		<!--<li id="comment-119" class="pingback even thread-even depth-1">
+			<div class="comment-body">
+				Pingback: <a href='/user-acceptance-testing-uat-automation/' rel='external nofollow' class='url'>Automating user acceptance testing: what needs to be done?</a> 			</div>-->
+</li><!-- #comment-## -->
+		<li id="comment-170" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-170" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='https://secure.gravatar.com/avatar/f40a18b688d4e3cf8ccbc2741ca92d27?s=42&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/f40a18b688d4e3cf8ccbc2741ca92d27?s=84&#038;d=mm&#038;r=g 2x' class='avatar avatar-42 photo' height='42' width='42' />						
+						
+					</div><!-- .comment-author -->
+					<div class="comment-metadata">
+					<b class="fn">Johny H.</b> <span class="says">on</span>						<time datetime="2018-03-26T08:22:49+00:00">
+							March 26, 2018						</time>
+						
+					
+									</div><!-- .comment-metadata -->
+				<div class="comment-content">
+					<p>Decent article but needs a stronger focus on visual regression testing. First, noone is writing about it, but everyone needs to be doing it (and, preferably, automating it). Second, visual regression testing is something that your tools is doing, amirite?</p>
+				</div><!-- .comment-content -->
+					
+
+									</footer><!-- .comment-meta -->
+
+				
+
+				<!-- <div class="reply"><a rel='nofollow' class='comment-reply-link' href='#comment-170' onclick='return addComment.moveForm( "div-comment-170", "170", "respond", "1017" )' aria-label='Reply to Johny H.'>Reply</a></div> -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-187" class="comment even thread-even depth-1">
+			<article id="div-comment-187" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='https://secure.gravatar.com/avatar/9f935d5dbcc07eb4b1e252b4131f739f?s=42&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/9f935d5dbcc07eb4b1e252b4131f739f?s=84&#038;d=mm&#038;r=g 2x' class='avatar avatar-42 photo' height='42' width='42' />						
+						
+					</div><!-- .comment-author -->
+					<div class="comment-metadata">
+					<b class="fn">Ilya G.</b> <span class="says">on</span>						<time datetime="2018-04-02T12:04:27+00:00">
+							April 2, 2018						</time>
+						
+					
+									</div><!-- .comment-metadata -->
+				<div class="comment-content">
+					<p>Thanks for your interest, Johny!</p>
+<p>Yes, we&#8217;re focusing on visual regression testing as the core functionality, but there&#8217;s other functionality as well. You can run tests in a Minimal verification mode where Screenster will only look at visuals for the first and the las screenshot in a test. For the rest of the test, it will only execute the test commands.</p>
+				</div><!-- .comment-content -->
+					
+
+									</footer><!-- .comment-meta -->
+
+				
+
+				<!-- <div class="reply"><a rel='nofollow' class='comment-reply-link' href='#comment-187' onclick='return addComment.moveForm( "div-comment-187", "187", "respond", "1017" )' aria-label='Reply to Ilya G.'>Reply</a></div> -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-190" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-190" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='https://secure.gravatar.com/avatar/987132b7a0457338d85c3edefa58f46f?s=42&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/987132b7a0457338d85c3edefa58f46f?s=84&#038;d=mm&#038;r=g 2x' class='avatar avatar-42 photo' height='42' width='42' />						
+						
+					</div><!-- .comment-author -->
+					<div class="comment-metadata">
+					<b class="fn">Sam</b> <span class="says">on</span>						<time datetime="2018-04-04T20:15:56+00:00">
+							April 4, 2018						</time>
+						
+					
+									</div><!-- .comment-metadata -->
+				<div class="comment-content">
+					<p>Great to see how your product has improved over the past six months. The Selenium-like verification of actions is useful because its fast and you still see if something&#8217;s wrong in the UI if you keep your tests fairly short. I&#8217;d love to see more improvements because this tool is definitely going to be big!</p>
+				</div><!-- .comment-content -->
+					
+
+									</footer><!-- .comment-meta -->
+
+				
+
+				<!-- <div class="reply"><a rel='nofollow' class='comment-reply-link' href='#comment-190' onclick='return addComment.moveForm( "div-comment-190", "190", "respond", "1017" )' aria-label='Reply to Sam'>Reply</a></div> -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-205" class="comment even thread-even depth-1">
+			<article id="div-comment-205" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='https://secure.gravatar.com/avatar/2aeb89c415e8db6a6f7120a07cf9f5b5?s=42&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/2aeb89c415e8db6a6f7120a07cf9f5b5?s=84&#038;d=mm&#038;r=g 2x' class='avatar avatar-42 photo' height='42' width='42' />						
+						
+					</div><!-- .comment-author -->
+					<div class="comment-metadata">
+					<b class="fn">Jessie Woodson</b> <span class="says">on</span>						<time datetime="2018-04-06T18:33:05+00:00">
+							April 6, 2018						</time>
+						
+					
+									</div><!-- .comment-metadata -->
+				<div class="comment-content">
+					<p>It takes adherence to follow best practices<br />
+I&#8217;d say, regression testing takes planning, especially if we&#8217;re talking UI regression testing. Even with a IDE or tool like this one covering the complete functionality of a UI is simply not feasible</p>
+				</div><!-- .comment-content -->
+					
+
+									</footer><!-- .comment-meta -->
+
+				
+
+				<!-- <div class="reply"><a rel='nofollow' class='comment-reply-link' href='#comment-205' onclick='return addComment.moveForm( "div-comment-205", "205", "respond", "1017" )' aria-label='Reply to Jessie Woodson'>Reply</a></div> -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-212" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-212" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='https://secure.gravatar.com/avatar/2611fff86d23c70991d631180210fdba?s=42&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/2611fff86d23c70991d631180210fdba?s=84&#038;d=mm&#038;r=g 2x' class='avatar avatar-42 photo' height='42' width='42' />						
+						
+					</div><!-- .comment-author -->
+					<div class="comment-metadata">
+					<b class="fn">nemo</b> <span class="says">on</span>						<time datetime="2018-04-08T15:38:55+00:00">
+							April 8, 2018						</time>
+						
+					
+									</div><!-- .comment-metadata -->
+				<div class="comment-content">
+					<p>thanks for this neat write-up! imho this should be called &#8220;UI regression testing&#8221; or &#8220;regression testing for the web&#8221; because you&#8217;re mostly looking at these things in this post. still like it though!</p>
+				</div><!-- .comment-content -->
+					
+
+									</footer><!-- .comment-meta -->
+
+				
+
+				<!-- <div class="reply"><a rel='nofollow' class='comment-reply-link' href='#comment-212' onclick='return addComment.moveForm( "div-comment-212", "212", "respond", "1017" )' aria-label='Reply to nemo'>Reply</a></div> -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-228" class="comment even thread-even depth-1">
+			<article id="div-comment-228" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='https://secure.gravatar.com/avatar/0e195464e43f9a854ea2fe93144aa628?s=42&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/0e195464e43f9a854ea2fe93144aa628?s=84&#038;d=mm&#038;r=g 2x' class='avatar avatar-42 photo' height='42' width='42' />						
+						
+					</div><!-- .comment-author -->
+					<div class="comment-metadata">
+					<b class="fn">wickedhumor</b> <span class="says">on</span>						<time datetime="2018-04-11T20:06:59+00:00">
+							April 11, 2018						</time>
+						
+					
+									</div><!-- .comment-metadata -->
+				<div class="comment-content">
+					<p>I&#8217;m browsing through your blog right now, and one thing that&#8217;s kinda good about it is that you talk about other tools as well&#8230; in an almost unbiased manner. I wouldn&#8217;t agree with everything you write, but I used to work with some of the desktop tools you mention and it looks like you&#8217;re mostly right about them</p>
+				</div><!-- .comment-content -->
+					
+
+									</footer><!-- .comment-meta -->
+
+				
+
+				<!-- <div class="reply"><a rel='nofollow' class='comment-reply-link' href='#comment-228' onclick='return addComment.moveForm( "div-comment-228", "228", "respond", "1017" )' aria-label='Reply to wickedhumor'>Reply</a></div> -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-315" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-315" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='https://secure.gravatar.com/avatar/fe9091348abda8cfda34cf5256989018?s=42&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/fe9091348abda8cfda34cf5256989018?s=84&#038;d=mm&#038;r=g 2x' class='avatar avatar-42 photo' height='42' width='42' />						
+						
+					</div><!-- .comment-author -->
+					<div class="comment-metadata">
+					<b class="fn">Carl Thompson</b> <span class="says">on</span>						<time datetime="2018-04-16T18:24:29+00:00">
+							April 16, 2018						</time>
+						
+					
+									</div><!-- .comment-metadata -->
+				<div class="comment-content">
+					<p>This looks like a solid list of regression testing best practices. Hope you will keep on expanding it.</p>
+				</div><!-- .comment-content -->
+					
+
+									</footer><!-- .comment-meta -->
+
+				
+
+				<!-- <div class="reply"><a rel='nofollow' class='comment-reply-link' href='#comment-315' onclick='return addComment.moveForm( "div-comment-315", "315", "respond", "1017" )' aria-label='Reply to Carl Thompson'>Reply</a></div> -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<!--<li id="comment-371" class="pingback even thread-even depth-1">
+			<div class="comment-body">
+				Pingback: <a href='/software-testing-costs/' rel='external nofollow' class='url'>5 ways to reduce software testing costs</a> 			</div>-->
+</li><!-- #comment-## -->
+		<!--<li id="comment-372" class="pingback odd alt thread-odd thread-alt depth-1">
+			<div class="comment-body">
+				Pingback: <a href='/regression-testing-tools-most-important-facts/' rel='external nofollow' class='url'>What you need to know about regression testing tools in 2017</a> 			</div>-->
+</li><!-- #comment-## -->
+		<li id="comment-395" class="comment even thread-even depth-1">
+			<article id="div-comment-395" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='https://secure.gravatar.com/avatar/4128afd6fe6cb66f1707b98484fdf9ce?s=42&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/4128afd6fe6cb66f1707b98484fdf9ce?s=84&#038;d=mm&#038;r=g 2x' class='avatar avatar-42 photo' height='42' width='42' />						
+						
+					</div><!-- .comment-author -->
+					<div class="comment-metadata">
+					<b class="fn">lauren phelps</b> <span class="says">on</span>						<time datetime="2018-04-20T18:47:07+00:00">
+							April 20, 2018						</time>
+						
+					
+									</div><!-- .comment-metadata -->
+				<div class="comment-content">
+					<p>Regression testing techniques<br />
+— Retest All<br />
+— Test Case Selection<br />
+— Test Case Prioritization</p>
+<p>IMHO, a tendency with the latter two is that the number of selected and prioritized tests cases gets smaller with each month. Some actually consider it a good practice to gradually reduce the number of tests they run</p>
+				</div><!-- .comment-content -->
+					
+
+									</footer><!-- .comment-meta -->
+
+				
+
+				<!-- <div class="reply"><a rel='nofollow' class='comment-reply-link' href='#comment-395' onclick='return addComment.moveForm( "div-comment-395", "395", "respond", "1017" )' aria-label='Reply to lauren phelps'>Reply</a></div> -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-511" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-511" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='https://secure.gravatar.com/avatar/565ce270e117b0b413a5e436e5ad7440?s=42&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/565ce270e117b0b413a5e436e5ad7440?s=84&#038;d=mm&#038;r=g 2x' class='avatar avatar-42 photo' height='42' width='42' />						
+						
+					</div><!-- .comment-author -->
+					<div class="comment-metadata">
+					<b class="fn">Mr. Mitra</b> <span class="says">on</span>						<time datetime="2018-04-25T20:34:47+00:00">
+							April 25, 2018						</time>
+						
+					
+									</div><!-- .comment-metadata -->
+				<div class="comment-content">
+					<p>So you&#8217;re basically implying that what this Screenster tool does is more that just screenshot comparison? How is it different from having a screenshot comparison script on top of Selenium?</p>
+				</div><!-- .comment-content -->
+					
+
+									</footer><!-- .comment-meta -->
+
+				
+
+				<!-- <div class="reply"><a rel='nofollow' class='comment-reply-link' href='#comment-511' onclick='return addComment.moveForm( "div-comment-511", "511", "respond", "1017" )' aria-label='Reply to Mr. Mitra'>Reply</a></div> -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-512" class="comment byuser comment-author-ilya-goncharov bypostauthor even thread-even depth-1">
+			<article id="div-comment-512" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='https://secure.gravatar.com/avatar/9f935d5dbcc07eb4b1e252b4131f739f?s=42&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/9f935d5dbcc07eb4b1e252b4131f739f?s=84&#038;d=mm&#038;r=g 2x' class='avatar avatar-42 photo' height='42' width='42' />						
+						
+					</div><!-- .comment-author -->
+					<div class="comment-metadata">
+					<b class="fn">Ilya Goncharov</b> <span class="says">on</span>						<time datetime="2018-04-25T21:04:26+00:00">
+							April 25, 2018						</time>
+						
+					
+									</div><!-- .comment-metadata -->
+				<div class="comment-content">
+					<p>Oh where do I begin:)<br />
+<br />
+— Screenster doesn&#8217;t just capture screenshots, it analyzes the DOM of the page and stores a DOM snapshot for each baseline.<br />
+<br />
+— It actually recognizes content. It can recognize text, and <strong>it can even tell dates apart from other text</strong>. So if you&#8217;re dealing with auto-updating timestamps, Screenster will handle them us such.<br />
+<br />
+— It captures self-healing locators for each element. If a change to your code results in renaming or relocating an element, Screenster will still be able to locate if with a 99% probability.<br />
+<br />
+— Screenster doesn&#8217;t use simplistic pixel-by-pixel comparison. And I&#8217;m not talking about change/% tolerance either. Screenster can look and visually verify UI elements. This is more accurate than comparing screenshots of the complete page.</p>
+				</div><!-- .comment-content -->
+					
+
+									</footer><!-- .comment-meta -->
+
+				
+
+				<!-- <div class="reply"><a rel='nofollow' class='comment-reply-link' href='#comment-512' onclick='return addComment.moveForm( "div-comment-512", "512", "respond", "1017" )' aria-label='Reply to Ilya Goncharov'>Reply</a></div> -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-546" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-546" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='https://secure.gravatar.com/avatar/c922d8b24c7b5dfff31ead9d0601002b?s=42&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/c922d8b24c7b5dfff31ead9d0601002b?s=84&#038;d=mm&#038;r=g 2x' class='avatar avatar-42 photo' height='42' width='42' />						
+						
+					</div><!-- .comment-author -->
+					<div class="comment-metadata">
+					<b class="fn">alphanumeric</b> <span class="says">on</span>						<time datetime="2018-04-27T11:30:58+00:00">
+							April 27, 2018						</time>
+						
+					
+									</div><!-- .comment-metadata -->
+				<div class="comment-content">
+					<p>So what&#8217;s the typic regression testing strategy with Screenster? Imho, you&#8217;re basically talking about codeless automation of the UI, which is hard to sell to a Selenium engineer type because job security&#8230;</p>
+				</div><!-- .comment-content -->
+					
+
+									</footer><!-- .comment-meta -->
+
+				
+
+				<!-- <div class="reply"><a rel='nofollow' class='comment-reply-link' href='#comment-546' onclick='return addComment.moveForm( "div-comment-546", "546", "respond", "1017" )' aria-label='Reply to alphanumeric'>Reply</a></div> -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-625" class="comment even thread-even depth-1">
+			<article id="div-comment-625" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='https://secure.gravatar.com/avatar/9073dbd3fee2cd7ecef32f721551e97a?s=42&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/9073dbd3fee2cd7ecef32f721551e97a?s=84&#038;d=mm&#038;r=g 2x' class='avatar avatar-42 photo' height='42' width='42' />						
+						
+					</div><!-- .comment-author -->
+					<div class="comment-metadata">
+					<b class="fn">Anton P.</b> <span class="says">on</span>						<time datetime="2018-05-02T12:50:11+00:00">
+							May 2, 2018						</time>
+						
+					
+									</div><!-- .comment-metadata -->
+				<div class="comment-content">
+					<p>This post does a good job an telling what is regression testing, but I can not quite agree with the last part. I think you can&#8217;t substitute coded test with record-playback because tests are brittle and hard to support in the future</p>
+				</div><!-- .comment-content -->
+					
+
+									</footer><!-- .comment-meta -->
+
+				
+
+				<!-- <div class="reply"><a rel='nofollow' class='comment-reply-link' href='#comment-625' onclick='return addComment.moveForm( "div-comment-625", "625", "respond", "1017" )' aria-label='Reply to Anton P.'>Reply</a></div> -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-769" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-769" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='https://secure.gravatar.com/avatar/3b9abf9181eba5ba795d78c88b9ed041?s=42&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/3b9abf9181eba5ba795d78c88b9ed041?s=84&#038;d=mm&#038;r=g 2x' class='avatar avatar-42 photo' height='42' width='42' />						
+						
+					</div><!-- .comment-author -->
+					<div class="comment-metadata">
+					<b class="fn">J. Freedman</b> <span class="says">on</span>						<time datetime="2018-05-10T19:57:39+00:00">
+							May 10, 2018						</time>
+						
+					
+									</div><!-- .comment-metadata -->
+				<div class="comment-content">
+					<p>Regression testing is a perfect example of where automation is an ABSOLUTE must, and UI testing is a great example of a field where writing tests manually isn&#8217;t necessarily the best option. It&#8217;s really not just that programming tests is difficult or tedious (I&#8217;d argue that manual testing is more tedious). WebDriver was created in the era of &#8216;lean GUI&#8217; where most web UIs were static pages with interaction limited to forms and buttons. For UIs of this type, you didn&#8217;t really need to thoroughly test if everything is okay with the layout because all the conversion-critical element of a user journey was concentrated around forms, buttons, and navigation. So basically it was okay to have a script opening a page, checking if the form is there, and if providing the right input values to the form and clicking on submit would give you the right action. Today, you can&#8217;t really call this a UI tests. Today things are mostly different on the UI side because we have a lot more logic on the front end. This either requires more manual testing, or a smarter automation solution.</p>
+				</div><!-- .comment-content -->
+					
+
+									</footer><!-- .comment-meta -->
+
+				
+
+				<!-- <div class="reply"><a rel='nofollow' class='comment-reply-link' href='#comment-769' onclick='return addComment.moveForm( "div-comment-769", "769", "respond", "1017" )' aria-label='Reply to J. Freedman'>Reply</a></div> -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-791" class="comment even thread-even depth-1">
+			<article id="div-comment-791" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='https://secure.gravatar.com/avatar/1a08596a9591444df9a5c13cb79ed809?s=42&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/1a08596a9591444df9a5c13cb79ed809?s=84&#038;d=mm&#038;r=g 2x' class='avatar avatar-42 photo' height='42' width='42' />						
+						
+					</div><!-- .comment-author -->
+					<div class="comment-metadata">
+					<b class="fn">Mr Sandman</b> <span class="says">on</span>						<time datetime="2018-05-11T20:52:18+00:00">
+							May 11, 2018						</time>
+						
+					
+									</div><!-- .comment-metadata -->
+				<div class="comment-content">
+					<p>Best practice #7. If someone tries to convince you manual regression testing is a good idea, they are lying</p>
+				</div><!-- .comment-content -->
+					
+
+									</footer><!-- .comment-meta -->
+
+				
+
+				<!-- <div class="reply"><a rel='nofollow' class='comment-reply-link' href='#comment-791' onclick='return addComment.moveForm( "div-comment-791", "791", "respond", "1017" )' aria-label='Reply to Mr Sandman'>Reply</a></div> -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<!--<li id="comment-810" class="pingback odd alt thread-odd thread-alt depth-1">
+			<div class="comment-body">
+				Pingback: <a href='/web-regression-testing/' rel='external nofollow' class='url'>Regression testing on the cloud</a> 			</div>-->
+</li><!-- #comment-## -->
+		<li id="comment-855" class="comment even thread-even depth-1">
+			<article id="div-comment-855" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='https://secure.gravatar.com/avatar/d06a11788f89a17d3b8f39531f27f0a0?s=42&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/d06a11788f89a17d3b8f39531f27f0a0?s=84&#038;d=mm&#038;r=g 2x' class='avatar avatar-42 photo' height='42' width='42' />						
+						
+					</div><!-- .comment-author -->
+					<div class="comment-metadata">
+					<b class="fn">Arbre Citizen</b> <span class="says">on</span>						<time datetime="2018-05-17T15:11:13+00:00">
+							May 17, 2018						</time>
+						
+					
+									</div><!-- .comment-metadata -->
+				<div class="comment-content">
+					<p>Thanks for the list of best practices that I think I can actually use for a viable regression test strategy!</p>
+				</div><!-- .comment-content -->
+					
+
+									</footer><!-- .comment-meta -->
+
+				
+
+				<!-- <div class="reply"><a rel='nofollow' class='comment-reply-link' href='#comment-855' onclick='return addComment.moveForm( "div-comment-855", "855", "respond", "1017" )' aria-label='Reply to Arbre Citizen'>Reply</a></div> -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-981" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-981" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='https://secure.gravatar.com/avatar/cee48737f87b5b025b440504356880b5?s=42&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/cee48737f87b5b025b440504356880b5?s=84&#038;d=mm&#038;r=g 2x' class='avatar avatar-42 photo' height='42' width='42' />						
+						
+					</div><!-- .comment-author -->
+					<div class="comment-metadata">
+					<b class="fn">Aftermath Circus</b> <span class="says">on</span>						<time datetime="2018-05-22T10:43:21+00:00">
+							May 22, 2018						</time>
+						
+					
+									</div><!-- .comment-metadata -->
+				<div class="comment-content">
+					<p>Thanks for a neat collection of regression testing best practices! Also, kudos to you for adding the image credits (one of them is from my website)</p>
+				</div><!-- .comment-content -->
+					
+
+									</footer><!-- .comment-meta -->
+
+				
+
+				<!-- <div class="reply"><a rel='nofollow' class='comment-reply-link' href='#comment-981' onclick='return addComment.moveForm( "div-comment-981", "981", "respond", "1017" )' aria-label='Reply to Aftermath Circus'>Reply</a></div> -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-982" class="comment even thread-even depth-1">
+			<article id="div-comment-982" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='https://secure.gravatar.com/avatar/a1dfad53a882a859a6cc0b32669c42a0?s=42&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/a1dfad53a882a859a6cc0b32669c42a0?s=84&#038;d=mm&#038;r=g 2x' class='avatar avatar-42 photo' height='42' width='42' />						
+						
+					</div><!-- .comment-author -->
+					<div class="comment-metadata">
+					<b class="fn">Telltale Pioneer</b> <span class="says">on</span>						<time datetime="2018-05-22T10:44:54+00:00">
+							May 22, 2018						</time>
+						
+					
+									</div><!-- .comment-metadata -->
+				<div class="comment-content">
+					<p>These seem like nice ways to prioritize a regression test</p>
+				</div><!-- .comment-content -->
+					
+
+									</footer><!-- .comment-meta -->
+
+				
+
+				<!-- <div class="reply"><a rel='nofollow' class='comment-reply-link' href='#comment-982' onclick='return addComment.moveForm( "div-comment-982", "982", "respond", "1017" )' aria-label='Reply to Telltale Pioneer'>Reply</a></div> -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		</ol><!-- .comment-list -->
+
+		
+	
+	
+		<div id="respond" class="comment-respond">
+		<h2 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="index.html#respond" style="display:none;">Cancel reply</a></small></h2>			<form action="/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate>
+				<p class="comment-notes"><span id="email-notes">Your email address will not be published.</span> Required fields are marked <span class="required">*</span></p><p class="comment-form-comment"><label for="comment">Comment</label> <textarea id="comment" name="comment" cols="45" rows="8" maxlength="65525" required="required"></textarea></p><p class="comment-form-author"><label for="author">Name <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" maxlength="245" required='required' /></p>
+<p class="comment-form-email"><label for="email">Email <span class="required">*</span></label> <input id="email" name="email" type="email" value="" size="30" maxlength="100" aria-describedby="email-notes" required='required' /></p>
+<p class="comment-form-url"><label for="url">Website</label> <input id="url" name="url" type="url" value="" size="30" maxlength="200" /></p>
+<p class="comment-form-cookies-consent"><input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes" /><label for="wp-comment-cookies-consent">Save my name, email, and website in this browser for the next time I comment.</label></p>
+<p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Post Comment" /> <input type='hidden' name='comment_post_ID' value='1017' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+</p>			</form>
+			</div><!-- #respond -->
+	
+</div><!-- .comments-area -->
+			</div>		</div>	</div></div>
+<footer id="footer">
+	<div class="footer-holder">
+		<div class="container clearfix">
+							<section id="nav_menu-2" class="col-md-4 footer-box widget_nav_menu"><h3>Screenster</h3><div class="menu-screenster-menu-container"><ul id="menu-screenster-menu" class="menu"><li id="menu-item-307" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-307"><a href="./documentation/demo-automation-of-gmail-with-screenster/index.html">Documentation</a></li>
+<li id="menu-item-302" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-302"><a href="./documentation/local-installation/index.html">Local Installation</a></li>
+<li id="menu-item-2258" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2258"><a href="./documentation/demo-automation-of-gmail-with-screenster/index.html">Demo: Automation of Gmail with Screenster</a></li>
+<li id="menu-item-2259" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2259"><a href="./documentation/recording-tests/index.html">Recording Tests</a></li>
+<li id="menu-item-2260" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2260"><a href="./documentation/advanced-features/index.html">Advanced Features</a></li>
+<li id="menu-item-57" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-57"><a href="./pricing/index.html">Pricing</a></li>
+<li id="menu-item-56" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-56"><a href="./support/index.html">Support</a></li>
+<li id="menu-item-366" class="menu-item menu-item-type-post_type menu-item-object-page current_page_parent menu-item-366"><a href="./blog/index.html">Blog</a></li>
+<li id="menu-item-367" class="sign-link menu-item menu-item-type-custom menu-item-object-custom menu-item-367"><a href="https://tests.screenster.io">My Tests</a></li>
+</ul></div></section>										<section id="nav_menu-3" class="col-md-4 footer-box widget_nav_menu"><h3>Community</h3><div class="menu-community-menu-container"><ul id="menu-community-menu" class="menu"><li id="menu-item-59" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-59"><a target="_blank" href="https://groups.google.com/forum/#!forum/screenster">Google Group</a></li>
+<li id="menu-item-283" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-283"><a href="https://www.facebook.com/screenster.io">Facebook</a></li>
+<li id="menu-item-284" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-284"><a href="https://twitter.com/screenster_io">Twitter</a></li>
+<li id="menu-item-285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-285"><a href="https://www.linkedin.com/company/screenster">LinkedIn</a></li>
+<li id="menu-item-286" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-286"><a href="https://plus.google.com/u/0/b/102437454572601473183/102437454572601473183">Google+</a></li>
+<li id="menu-item-1521" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1521"><a href="https://www.youtube.com/channel/UCYAf5YzOoXZr8n7r1TEaHlw">YouTube</a></li>
+</ul></div></section>										<section id="nav_menu-4" class="col-md-4 footer-box widget_nav_menu"><h3>Company</h3><div class="menu-company-menu-container"><ul id="menu-company-menu" class="menu"><li id="menu-item-66" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-66"><a href="./about-us/index.html">About Us</a></li>
+<li id="menu-item-68" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-68"><a href="./privacy-policy/index.html">Privacy Policy</a></li>
+<li id="menu-item-67" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-67"><a href="./license-agreement/index.html">License Agreement</a></li>
+<li id="menu-item-1941" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1941"><a href="./contact-us/index.html">Contact Us</a></li>
+</ul></div></section>					</div>
+	</div>
+	<div class="copyright">
+
+<div class="breadcrumbs" typeof="BreadcrumbList" vocab="http://schema.org/">
+    <!-- Breadcrumb NavXT 6.1.0 -->
+<span property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" title="Go to Screenster." href="./index.html" class="home"><span property="name">Screenster</span></a><meta property="position" content="1"></span> &gt; <span property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" title="Go to Blog." href="./blog/index.html" class="post-root post post-post"><span property="name">Blog</span></a><meta property="position" content="2"></span> &gt; <span property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" title="Go to the UI Testing Automation category archives." href="./category/ui-testing-automation/index.html" class="taxonomy category"><span property="name">UI Testing Automation</span></a><meta property="position" content="3"></span> &gt; <span property="itemListElement" typeof="ListItem"><span property="name">What is Regression Testing? Techniques and best practices</span><meta property="position" content="4"></span></div>
+		<div class="container">
+
+			2018 &copy; <a style="color:#fff;" target="_blank" href="./index.html">Screenster</a>, LLC. All rights reserved.
+
+		</div>
+	</div>
+</footer>
+
+	<div itemscope itemType="http://schema.org/BlogPosting">
+		<meta itemprop="inLanguage" content="en-US"/>
+		<meta itemprop="headline" content="What is Regression Testing? Techniques and best practices">
+		<meta itemprop="mainEntityOfPage" content="/regression-testing/"/>
+		<meta itemprop="datePublished" content="2017-05-03">
+		<meta itemprop="dateModified" content="2018-05-21">
+		<meta itemprop="articleBody" content="If you’ve been following this blog, you know that we are pretty serious about regression testing best practices. Visual regressions were the arch-enemies of our product AjaxSwing. To overcome them, we’ve even created our own automated regression testing tool. Today, we’d like to talk about this type of testing. We&#8217;ll cover its key concepts and &hellip; Continue reading "What is Regression Testing? Techniques and best practices"">
+	  <div itemprop="image" itemscope="" itemtype="https://schema.org/ImageObject"/>
+		<meta itemprop="url" content="/wp-content/uploads/2017/01/regression-testing-101-300x200.jpg">
+		<meta itemprop="width" content="300">
+		<meta itemprop="height" content="300">
+	  </div>
+	  <div itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+		<meta itemprop="name" content="Ilya Goncharov">
+	  </div>
+	  <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+		<meta itemprop="name" content="Screenster">
+		<meta itemprop="url" href="">
+		<meta itemprop="description" content="Visual UI Testing Automation">
+		<span itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+		  <meta itemprop="image" content="">
+		  <meta itemprop="url" content="">
+		  <meta itemprop="width" content="300">
+		  <meta itemprop="height" content="300">
+		</span>
+	</div>
+    
+  <div id="wonderpluginlightbox_options" data-skinsfoldername="skins/default/"  data-jsfolder="/wp-content/plugins/wonderplugin-lightbox/engine/" data-autoslide="false" data-slideinterval="5000" data-showtimer="true" data-timerposition="bottom" data-timerheight="2" data-timercolor="#dc572e" data-timeropacity="1" data-showplaybutton="true" data-alwaysshownavarrows="false" data-bordersize="0" data-showtitleprefix="true" data-responsive="true" data-fullscreenmode="true" data-closeonoverlay="true" data-videohidecontrols="false" data-titlestyle="bottom" data-imagepercentage="100" data-enabletouchswipe="true" data-autoplay="true" data-html5player="true" data-overlaybgcolor="#000" data-overlayopacity="0.8" data-defaultvideovolume="1" data-bgcolor="#000" data-borderradius="0" data-thumbwidth="96" data-thumbheight="72" data-thumbtopmargin="12" data-thumbbottommargin="12" data-barheight="50" data-showtitle="false" data-titleprefix="%NUM / %TOTAL" data-titlebottomcss="color:#333; font-size:14px; font-family:Armata,sans-serif,Arial; overflow:hidden; text-align:left;" data-showdescription="false" data-descriptionbottomcss="color:#333; font-size:12px; font-family:Arial,Helvetica,sans-serif; overflow:hidden; text-align:left; margin:4px 0px 0px; padding: 0px;" data-titleinsidecss="color:#fff; font-size:16px; font-family:Arial,Helvetica,sans-serif; overflow:hidden; text-align:left;" data-descriptioninsidecss="color:#fff; font-size:12px; font-family:Arial,Helvetica,sans-serif; overflow:hidden; text-align:left; margin:4px 0px 0px; padding: 0px;" data-videobgcolor="#000" data-html5videoposter="" data-responsivebarheight="false" data-smallscreenheight="415" data-barheightonsmallheight="48" data-notkeepratioonsmallheight="false" data-wonderplugin-lightbox-options="f305a0a9fd" data-_wp_http_referer="/wp-admin/admin.php?page=wonderplugin_lightbox_show_options" style="display:none;"></div><div class="wonderplugin-engine"><a href="http://www.wonderplugin.com/wordpress-lightbox/" title="WordPress Image Lightbox Plugin">WordPress Image Lightbox Plugin</a></div><link rel='stylesheet' id='rainmaker_form_style-css'  href='./wp-content/plugins/icegram-rainmaker/assets/css/form.css%3Fver=0.33.css' type='text/css' media='all' />
+<script type='text/javascript'>
+/* <![CDATA[ */
+var wpcf7 = {"apiSettings":{"root":"https:\/\/screenster.io\/wp-json\/contact-form-7\/v1","namespace":"contact-form-7\/v1"},"recaptcha":{"messages":{"empty":"Please verify that you are not a robot."}}};
+/* ]]> */
+</script>
+<script type='text/javascript' src='./wp-content/plugins/contact-form-7/includes/js/scripts.js%3Fver=5.0.2'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var leadin_wordpress = {"userRole":"visitor","pageType":"post","leadinPluginVersion":"6.1.5"};
+/* ]]> */
+</script>
+<script type='text/javascript' async defer src='https://js.hs-scripts.com/4371298.js?ver=4.9.6'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var screenReaderText = {"expand":"expand child menu","collapse":"collapse child menu"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='./wp-content/themes/twentysixteen/js/functions.js%3Fver=20151204'></script>
+<script type='text/javascript' src='./wp-includes/js/wp-embed.min.js%3Fver=4.9.6'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var rm_pre_data = {"ajax_url":"https:\/\/screenster.io\/wp-admin\/admin-ajax.php","rm_nonce_field":"8588a73fa9"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='./wp-content/plugins/icegram-rainmaker/assets/js/main.js%3Fver=0.33'></script>
+
+</body>
+</html>

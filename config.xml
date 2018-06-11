@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<widget xmlns   = "http://www.w3.org/ns/widgets"
+    xmlns:gap   = "http://phonegap.com/ns/1.0"
+    id          = "com.regtesting.screenster"
+    versionCode = "10"
+    version     = "1.0.0" >
+
+<!-- versionCode is optional and Android only -->
+
+  <name>Regression Testing</name>
+
+  <description>
+If you’ve been following this blog, you know that we are pretty serious about regression testing best practices.
+  </description>
+
+  <author href="https://screenster.io"  >
+      Screenster
+  </author>
+
+</widget>
